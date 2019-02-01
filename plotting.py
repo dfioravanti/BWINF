@@ -37,11 +37,17 @@ def plot_contours(ax, clf, xx, yy, **params):
     out = ax.contourf(xx, yy, Z, **params)
     return out
 
-def plot_dataset(xs, ys):
+def plot_dataset(xs, ys, ax=None):
     
-    fig = plt.figure()
-    color = ['red' if l == 1 else 'blue' for l in ys]
-    plt.scatter(xs[:, 0], xs[:, 1], c=color, cmap=plt.cm.coolwarm, edgecolors='k', s=20)
+    if ax is None:
+        fig, ax = plt.subplots()
+    red_dots = xs[ys == 1]
+    blue_dots = xs[ys == 0]
+    
+    ax.scatter(red_dots[:, 0], red_dots[:, 1], c='red', cmap=plt.cm.coolwarm, edgecolors='k', s=20, label='Class 1')
+    ax.scatter(blue_dots[:, 0], blue_dots[:, 1], c='blue', cmap=plt.cm.coolwarm, edgecolors='k', s=20, label='Class 2')
+
+    ax.legend()
     
 def plot_classifier(xs, ys, clf):
 
@@ -52,4 +58,4 @@ def plot_classifier(xs, ys, clf):
     color = ['red' if l == 1 else 'blue' for l in ys]
 
     plot_contours(ax, clf, xx, yy, cmap=plt.cm.coolwarm, alpha=0.8)
-    ax.scatter(x0, x1, c=color, cmap=plt.cm.coolwarm, s=20, edgecolors='k')
+    plot_dataset(xs, ys, ax)
